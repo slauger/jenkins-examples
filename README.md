@@ -79,9 +79,9 @@ pipeline {
     
     stages {
         stage('Check patchlevel') {
-		    when {
-			    expression { params.force == true }
-			}
+            when {
+                expression { params.force == true }
+            }
             steps {
                 script {
                         println("Hello World")
