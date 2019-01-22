@@ -2,96 +2,11 @@
 
 Examples for Jenkins (Scripted Pipelines and Job DSL).
 
-## Docker build pipeline
-
-```
-pipeline {
-  agent any
-
-  stages {
-    stage('Checkout') {
-      steps {
-        echo 'synchronize git repos...'
-        checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'SubmoduleOption', disableSubmodules: false, parentCredentials: true, recursiveSubmodules: true, reference: '', trackingSubmodules: false]], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'credential-id', url: 'git@gitlab.com:project/project.git']]])
-      }
-    }
-    stage('Build') {
-      steps {
-        echo 'Building docker image...'
-        ansiColor('xterm') {
-          script {
-            app = docker.build("registry.gitlab.com/project/project/dockercontainer:latest")
-          }
-        }
-      }
-    }
-    stage('Test') {
-      steps {
-        echo 'Running CI tests...'
-        script {
-          docker.image('registry.gitlab.com/project/project/dockercontainer:latest').inside {
-            sh 'php -v'
-          }
-        }
-      }
-    }
-    stage('Push') {
-      steps {
-        echo 'Pushing image to Registry'
-        script {
-          docker.withRegistry('https://registry.gitlab.com/project/project/dockercontainer:latest', 'credential-id') {
-            app.push()
-          }
-        }
-      }
-    }
-  }
-}
-```
-
-## Trigger other job from pipeline
-
-```
-pipeline {
-  agent any
-  
-  stages {
-    stage('Build other projects') {
-      steps {
-        build job: 'patch1', parameters: [[$class: 'BooleanParameterValue', name: 'force', value: false]]
-        build job: 'patch2', parameters: [[$class: 'BooleanParameterValue', name: 'force', value: true]]
-      }
-    }
-  }
-}
-
-```
-
-## Skip stages
-
-```
-pipeline {
-    agent any
-    
-    parameters {
-        booleanParam(defaultValue: false, description: 'Force to tun', name: 'force')
-    }
-    
-    stages {
-        stage('Check patchlevel') {
-            when {
-                expression { params.force == true }
-            }
-            steps {
-                script {
-                        println("Hello World")
-                    }
-                }
-            }
-        }
-    }
-}
-```
+- Docker build pipeline
+- Trigger other job from pipeline
+- Skip stages
+- Iterate over an array 
+- Job DSL with JSON configuration
 
 ## Plugins
 
