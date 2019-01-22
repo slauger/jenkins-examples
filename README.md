@@ -8,6 +8,14 @@ Examples for Jenkins (Scripted Pipelines and Job DSL).
 - Iterate over an array 
 - Job DSL with JSON configuration
 
+## Job DSL
+
+See https://jenkinsci.github.io/job-dsl-plugin/
+
+## Configuration as code
+
+See https://jenkins.io/projects/jcasc/
+
 ## Plugins
 
 - https://wiki.jenkins-ci.org/display/JENKINS/Ansible+Plugin
@@ -35,3 +43,9 @@ Examples for Jenkins (Scripted Pipelines and Job DSL).
 - https://wiki.jenkins-ci.org/display/JENKINS/SSH+Slaves+plugin
 - https://wiki.jenkins.io/display/JENKINS/Workspace+Cleanup+Plugin
 - http://wiki.jenkins-ci.org/display/JENKINS/Docker+Pipeline+Plugin
+
+## Install plugin via CLI
+
+```
+java -jar jenkins-cli.jar -s http://127.0.0.1:8080/ install-plugin <name>
+```
